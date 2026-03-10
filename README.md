@@ -1,41 +1,60 @@
-DC Motor Speed Control - Model-Based Design (MBD) 🚀
-Overview
-This repository contains a complete mathematical Model-Based Design (MBD) for controlling the speed of a DC Motor using MATLAB/Simulink. The plant is built entirely from fundamental electrical and mechanical differential equations, without relying on pre-built physical toolboxes (like Simscape).
+# 🚀 DC Motor Speed Control - Model-Based Design (MBD)
 
-🆕 Version 2.0: Cascade Control vs. Single-Loop PI Control 🛡️
-The latest update introduces a Cascade Control architecture (Speed & Current loops) compared directly against a traditional Single-Loop PI controller under severe mechanical load variations.
+![Simulink](https://img.shields.io/badge/Software-MATLAB%20%2F%20Simulink-red)
+![Topic](https://img.shields.io/badge/Field-Mechatronics%20%26%20Control-blue)
+![Status](https://img.shields.io/badge/Version-2.0-green)
 
-The Engineering Challenge: Hardware Protection
-When a sudden mechanical load is applied at t = 2.0s:
+## 📌 Overview
+This repository features a comprehensive **Model-Based Design (MBD)** for DC Motor speed control. Unlike standard simulations, this plant is built entirely from scratch using **fundamental electrical and mechanical differential equations**, avoiding pre-built physical toolboxes like Simscape to demonstrate a deep understanding of system dynamics.
 
-🔴 Single PI Controller (The Reckless): Attempts to maintain the target speed at all costs, resulting in a dangerous current spike reaching ~25A. In a real-world scenario, this would likely destroy the H-Bridge transistors.
+---
 
-🟢 Cascade Controller (The Wise): The inner current loop acts as an intelligent safety mechanism, strictly limiting the current to a safe threshold of 15A. It sacrifices a fraction of speed recovery time to ensure complete hardware protection.
+## 🆕 Version 2.0: Cascade Control vs. Single-Loop PI 🛡️
+The latest update introduces a **Cascade Control Architecture** (Speed & Current loops), comparing it against a traditional **Single-Loop PI controller** under severe mechanical load variations.
 
-Simulation Results (The Trade-off)
-The scope below demonstrates the direct comparison (Top: Cascade, Bottom: Single PI):
+### ⚖️ The Engineering Challenge: Hardware Protection
+What happens when a sudden mechanical load is applied at $t = 2.0s$?
 
-System Architecture
-Both systems run in parallel for a direct performance comparison:
+| Controller | Philosophy | Result | Safety |
+| :--- | :--- | :--- | :--- |
+| **🔴 Single PI** | "The Reckless" | Attempts to maintain speed at all costs. | **Dangerous:** Current spikes to ~25A (H-Bridge risk). |
+| **🟢 Cascade** | "The Wise" | Inner loop limits current to a 15A threshold. | **Safe:** Protects hardware by sacrificing minor recovery time. |
 
-⚙️ Version 1.0: Single PI & Custom PWM Generator
-The foundational version of this project focuses on building the core components from scratch:
+---
 
-Mathematical Plant Modeling: Pure mathematical blocks highlighting a deep understanding of the motor's transfer function.
+## ⚙️ System Architecture & Features
 
-Custom PWM Generator: Designed from the ground up with a user-friendly UI (Mask) for toggling between Unipolar and Bipolar switching modes.
+### 1️⃣ Mathematical Plant Modeling
+The motor is represented through pure mathematical blocks based on:
+* **Electrical:** $V = L\frac{di}{dt} + Ri + e$
+* **Mechanical:** $T_m = J\frac{d\omega}{dt} + B\omega + T_L$
 
-Inside the Custom PWM:
-Version 1.0 Model & Scope:
-How to Run 💻
-Clone or download this repository.
+### 2️⃣ Custom PWM Generator
+Designed from the ground up with a **Custom Mask (UI)** allowing users to toggle between:
+* **Unipolar Switching**
+* **Bipolar Switching**
 
-Run the motor_params.m script in MATLAB to load the physical motor parameters into the workspace.
+---
 
-Open either DC_Motor_Cascade_vs_Single_PI.slx (V2.0) or DC_Motor_Single_PI.slx (V1.0) in Simulink.
+## 📊 Simulation Results
+The model runs both systems in parallel for a direct performance comparison. 
 
-Run the simulation and open the Scope blocks to observe the results.
+> [!TIP]
+> **Observation:** In the Cascade model, notice how the current "flatlines" at the limit during transients—this is the saturation block in the inner loop doing its job!
 
-Designed by: Ahmad Ghaith Mdraty
+---
 
-Role: Mechatronics & Control Systems Engineer
+## 💻 How to Run
+1.  **Clone** the repository.
+2.  Run `motor_params.m` in MATLAB to load constants into the Workspace.
+3.  Open `DC_Motor_Cascade_vs_Single_PI.slx` (V2.0) or `DC_Motor_Single_PI.slx` (V1.0).
+4.  Hit **Run** and explore the Scopes.
+
+---
+
+## 👤 About the Designer
+**Ahmad Ghaith Mdraty**
+*Mechatronics & Control Systems Engineer*
+
+---
+*Developed as part of a deep dive into Control Theory and Embedded System Protection.*
