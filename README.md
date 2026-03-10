@@ -1,18 +1,41 @@
-How do you protect physical hardware from aggressive software algorithms? ⚙️💻
+DC Motor Speed Control - Model-Based Design (MBD) 🚀
+Overview
+This repository contains a complete mathematical Model-Based Design (MBD) for controlling the speed of a DC Motor using MATLAB/Simulink. The plant is built entirely from fundamental electrical and mechanical differential equations, without relying on pre-built physical toolboxes (like Simscape).
 
-In the second phase of my Model-Based Design (MBD) series for DC Motors, I upgraded the control architecture from a standard Single-Loop PI to a Cascade Control system. The goal wasn't just to track speed accurately, but to survive a physical catastrophe!
+🆕 Version 2.0: Cascade Control vs. Single-Loop PI Control 🛡️
+The latest update introduces a Cascade Control architecture (Speed & Current loops) compared directly against a traditional Single-Loop PI controller under severe mechanical load variations.
 
-In this MATLAB/Simulink environment (built entirely from mathematical equations, zero black-box blocks), I applied a sudden, heavy mechanical load torque to test the robustness of both architectures:
+The Engineering Challenge: Hardware Protection
+When a sudden mechanical load is applied at t = 2.0s:
 
-🔴 Single PI Controller (The Reckless): To maintain the reference speed at any cost, the controller saturated the voltage and drew a massive current spike hitting ~25 Amps (bottom scope). In a real industrial plant, this instantaneous spike would fry the H-Bridge transistors and destroy the drive.
+🔴 Single PI Controller (The Reckless): Attempts to maintain the target speed at all costs, resulting in a dangerous current spike reaching ~25A. In a real-world scenario, this would likely destroy the H-Bridge transistors.
 
-🟢 Cascade Control (The Wise): Thanks to the inner current loop acting as a strict "security guard," the current was perfectly clamped at the safe limit of 15 Amps (top scope). The system intentionally sacrificed a bit of transient speed response, but it completely absorbed the mechanical shock and protected the hardware from thermal failure.
+🟢 Cascade Controller (The Wise): The inner current loop acts as an intelligent safety mechanism, strictly limiting the current to a safe threshold of 15A. It sacrifices a fraction of speed recovery time to ensure complete hardware protection.
 
-💡 The Engineering Takeaway: In electrical drives and automation, a successful control engineer doesn't just program for the perfect reference tracking; they design the system to ensure the motor survives the shift!
+Simulation Results (The Trade-off)
+The scope below demonstrates the direct comparison (Top: Cascade, Bottom: Single PI):
 
-Architectural details and the custom PWM generator are in the attached images.
-(GitHub repository link in the first comment 👇)
+System Architecture
+Both systems run in parallel for a direct performance comparison:
 
-I'd love to hear from my fellow engineers: How do you balance aggressive dynamic response with hardware protection in your industrial applications?
+⚙️ Version 1.0: Single PI & Custom PWM Generator
+The foundational version of this project focuses on building the core components from scratch:
 
-#Mechatronics #ControlSystems #MATLAB #Simulink #CascadeControl #Engineering #Automation #MotorControl #ModelBasedDesign
+Mathematical Plant Modeling: Pure mathematical blocks highlighting a deep understanding of the motor's transfer function.
+
+Custom PWM Generator: Designed from the ground up with a user-friendly UI (Mask) for toggling between Unipolar and Bipolar switching modes.
+
+Inside the Custom PWM:
+Version 1.0 Model & Scope:
+How to Run 💻
+Clone or download this repository.
+
+Run the motor_params.m script in MATLAB to load the physical motor parameters into the workspace.
+
+Open either DC_Motor_Cascade_vs_Single_PI.slx (V2.0) or DC_Motor_Single_PI.slx (V1.0) in Simulink.
+
+Run the simulation and open the Scope blocks to observe the results.
+
+Designed by: Ahmad Ghaith Mdraty
+
+Role: Mechatronics & Control Systems Engineer
