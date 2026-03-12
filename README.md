@@ -1,60 +1,43 @@
-# 🚀 DC Motor Speed Control - Model-Based Design (MBD)
+# DC Motor Control - Model-Based Design (MBD) Series 🚀
 
-![Simulink](https://img.shields.io/badge/Software-MATLAB%20%2F%20Simulink-red)
-![Topic](https://img.shields.io/badge/Field-Mechatronics%20%26%20Control-blue)
-![Status](https://img.shields.io/badge/Version-2.0-green)
-
-## 📌 Overview
-This repository features a comprehensive **Model-Based Design (MBD)** for DC Motor speed control. Unlike standard simulations, this plant is built entirely from scratch using **fundamental electrical and mechanical differential equations**, avoiding pre-built physical toolboxes like Simscape to demonstrate a deep understanding of system dynamics.
+## Overview
+This repository contains a complete mathematical Model-Based Design (MBD) for controlling a DC Motor using MATLAB/Simulink. The plant is built entirely from fundamental electrical and mechanical differential equations, without relying on pre-built physical toolboxes. The project evolves from a basic speed controller to a fully protected, highly accurate Servo Position controller.
 
 ---
 
-## 🆕 Version 2.0: Cascade Control vs. Single-Loop PI 🛡️
-The latest update introduces a **Cascade Control Architecture** (Speed & Current loops), comparing it against a traditional **Single-Loop PI controller** under severe mechanical load variations.
+## 🎯 🆕 Version 3.0: Servo Position Control (Triple-Loop Cascade)
+The latest major update transforms the motor into a precise Servo mechanism. A third outer loop (Position Loop) is added to command specific angles, while maintaining the rigorous hardware protection of the inner loops.
 
-### ⚖️ The Engineering Challenge: Hardware Protection
-What happens when a sudden mechanical load is applied at $t = 2.0s$?
+### Key Engineering Additions:
+* **Position Control Loop:** Proportional (P) controller designed to achieve a target angle (e.g., 90 degrees) with zero steady-state error and minimal overshoot.
+* **Rate Limiter (Slew Rate):** Implemented to strictly control angular acceleration and deceleration, preventing mechanical jerks and gear shearing during sudden position commands.
+* **Holding Current Demonstration:** Proves the Cascade system's ability to maintain a fixed position under heavy, sudden mechanical load (at t=2.0s) by smoothly supplying the exact required holding current without dangerous spikes.
 
-| Controller | Philosophy | Result | Safety |
-| :--- | :--- | :--- | :--- |
-| **🔴 Single PI** | "The Reckless" | Attempts to maintain speed at all costs. | **Dangerous:** Current spikes to ~25A (H-Bridge risk). |
-| **🟢 Cascade** | "The Wise" | Inner loop limits current to a 15A threshold. | **Safe:** Protects hardware by sacrificing minor recovery time. |
+**V3.0 Simulation Results & Architecture:** *(Top: Cascade Triple-Loop | Bottom: Single PI Loop)* ---
 
----
+## 🛡️ Version 2.0: Cascade Speed Control vs. Single PI
+This version highlights the critical importance of hardware protection by comparing a Cascade architecture (Speed & Current loops) against a standard Single-Loop PI controller under severe mechanical load variations.
 
-## ⚙️ System Architecture & Features
+* 🔴 **Single PI:** Saturates voltage and draws a massive, destructive inrush current (~75A) to track speed.
+* 🟢 **Cascade Control:** The inner current loop acts as a strict security guard, clamping the current perfectly at the safe limit of 15A, sacrificing a fraction of speed recovery to ensure complete hardware survival.
 
-### 1️⃣ Mathematical Plant Modeling
-The motor is represented through pure mathematical blocks based on:
-* **Electrical:** $V = L\frac{di}{dt} + Ri + e$
-* **Mechanical:** $T_m = J\frac{d\omega}{dt} + B\omega + T_L$
+**V2.0 Results & Architecture:** ---
 
-### 2️⃣ Custom PWM Generator
-Designed from the ground up with a **Custom Mask (UI)** allowing users to toggle between:
-* **Unipolar Switching**
-* **Bipolar Switching**
+## ⚙️ Version 1.0: Basic PI & Custom PWM Generator
+The foundational version focuses on building the core components from scratch:
 
----
+* **Mathematical Plant Modeling:** Pure mathematical blocks representing the motor's transfer function.
+* **Custom PWM Generator:** Designed from the ground up with a user-friendly UI (Mask) for toggling between Unipolar and Bipolar switching modes.
 
-## 📊 Simulation Results
-The model runs both systems in parallel for a direct performance comparison. 
-
-> [!TIP]
-> **Observation:** In the Cascade model, notice how the current "flatlines" at the limit during transients—this is the saturation block in the inner loop doing its job!
-
----
+**V1.0 Architecture:** ---
 
 ## 💻 How to Run
-1.  **Clone** the repository.
-2.  Run `motor_params.m` in MATLAB to load constants into the Workspace.
-3.  Open `DC_Motor_Cascade_vs_Single_PI.slx` (V2.0) or `DC_Motor_Single_PI.slx` (V1.0).
-4.  Hit **Run** and explore the Scopes.
+1. Clone or download this repository.
+2. Run the `motor_params.m` script in MATLAB to load the physical motor parameters into the workspace.
+3. Open any of the `.slx` files (e.g., `DC_Motor_Servo_Position_Control.slx`) in Simulink.
+4. Run the simulation and open the Scope blocks to observe the results.
 
 ---
 
-## 👤 About the Designer
-**Ahmad Ghaith Mdraty**
-*Mechatronics & Control Systems Engineer*
-
----
-*Developed as part of a deep dive into Control Theory and Embedded System Protection.*
+**Designed by:** Ahmad Ghaith Mdraty  
+**Role:** Mechatronics & Control Systems Engineer
